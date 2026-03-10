@@ -1,4 +1,4 @@
-class MaxVal {
+class MaxValue {
     static int maxVal(int[] nums) {
         if(nums.length==1) return nums[0];
         if(nums.length==2) return Math.max(nums[0],nums[1]);

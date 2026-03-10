@@ -1,30 +1,44 @@
 //https://leetcode.com/problems/house-robber-ii/
 
-public class HouseRobber2 {
-    static int robHelp(int[] nums) {
-        if(nums.length==1) return nums[0];
-        if(nums.length==2) return Math.max(nums[0],nums[1]);
-        int dp[]=new int[nums.length];
-        dp[0]=nums[0];
-        dp[1]=Math.max(nums[0],nums[1]);
-        for(int i=2;i<nums.length;i++){
-            dp[i]=Math.max(nums[i]+dp[i-2],dp[i-1]);
+class HouseRobber2 {
+    public int rob(int[] nums) {
+        int n = nums.length;
+        if(n==1)
+            return nums[0];
+        int[] temp1 = new int[n-1];
+        int[] temp2 = new int[n-1];
+        int j=0;
+        int k = 0;
+        for(int i=0;i<n;i++){
+            if(i!=n-1){
+                temp1[j++] = nums[i];
+            }
+            if(i!=0){
+                temp2[k++] = nums[i];
+            }
         }
-        return dp[nums.length-1];
+        
+        int[] dp = new int[n-1];
+        Arrays.fill(dp,-1);
+       int max1 = strategy(0,temp1,n-1,dp);
+       System.out.println(max1);
+       Arrays.fill(dp,-1);
+       int max2 = strategy(0,temp2,n-1,dp);
+       System.out.println(max2);
+       return Math.max(max1,max2);
+    
     }
-    static int rob(int []nums){
-        if(nums.length==0) return 0;
-        if(nums.length==1) return nums[0];
-        int arr1[]=new int[nums.length-1];
-        int arr2[]=new int[nums.length-1];
-        for(int i=0;i<nums.length-1;i++){
-            arr1[i]=nums[i];
-            arr2[i]=nums[i+1];
+
+    public int strategy(int index,int[] nums, int n,int[] dp){
+        if(index==n-1){
+            return nums[index];
         }
-        return Math.max(robHelp(arr1),robHelp(arr2));
+        if(index>=n)
+            return 0;
+        if(dp[index]!=-1)return dp[index];
+        int pick = nums[index] + strategy(index+2,nums,n,dp);
+        int notPick = strategy(index+1,nums,n,dp);
+        return dp[index] = Math.max(pick,notPick);
     }
-    public static void main(String[] args) {
-        int nums[]={10,50,54,21};
-        System.out.println(rob(nums));
-    }
+   
 }
